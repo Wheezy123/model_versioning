@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
-  resources :documents
+  resources :documents do
+  	resources :versions, only: [:destroy] do
+  		member do
+  			get :diff, to: 'versions#diff'
+  			put :rollback, to: 'versions#rollback'
+  		end
+  	end
+  end
 
   resources :sessions, only: [:new, :create] do
     delete 'logout', on: :collection
